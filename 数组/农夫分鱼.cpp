@@ -1,71 +1,45 @@
 /* 甲、乙、丙三位渔夫出海打鱼，他们随船带了21只箩筐。当晚返航时，他们发现有7筐装满了鱼，还有7筐装了半筐鱼，另外7筐则是空的，由于他们没有秤，只好通过目测认为7个满筐鱼的重量是相等的，
 7个半筐鱼的重量是相等的。在不将鱼倒出来的前提下,怎样将鱼平分为3份？*/
 
-#include<iostream>
-
-int fish[3][3] = { 0 };  //每一行代表一个人，列分别代表满筐数，半筐数，和空筐数。
-int full = 7;
-int half = 7;
-int empty = 7;
-
-void print() {
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j <=2; j++) {
-			switch (j) {
-				case 0:
-					std::cout << "满筐数为：";
-					break;
-				case 1:
-					std::cout << "半筐数为：";
-					break;
-				case 2 :
-					std::cout << "空筐数为：";
-					break;
-			}
-			std::cout << fish[i][j] << "\t";
-		}
-		std::cout << "\n";
-	}
-	std::cout << "\n";
-}
-
-int fishSharing(int k) {	
-	int full1, half1, empty1;
-	full1 = full;
-	half1 = half;
-	empty1 = empty;
-	
-	if (full < 0 || half < 0 || empty < 0)
-		return 0;
-
-	for (int i = 0; i < 3; i++) {
-		if (fish[i][0] + 0.5*fish[i][1]> 3.5)
-			return 0;
-	}
-	if (!full && !half && !empty)
-		return 1;
-	for (int i = 1; i <= 3; i++) {
-		fish[k][0] = i;
-		full -= i;
-		fish[k][1]=(3.5-i)/(0.5);
-		half = half - fish[k][1];
-		fish[k][2] = 7 - fish[k][0] - fish[k][1];
-		empty = empty - fish[k][2];
-		if (fishSharing(k + 1)) {
-			print();
-		}
-		full = full1;		//恢复上一次各种框框数。
-		half = half1;		
-		empty = empty1;
-	}
-	return 0;
-
-}
-
-int main(void) {	
-	
-
-	std::cout << "The solution of this question is" << std::endl;
-	fishSharing(0);
-	return 0;
+#include<stdio.h>
+int a[3][3], count;
+int main()
+{
+    int i, j, k, m, n, flag;
+    printf("It exists possible distribtion plans:\n");
+    for(i=0; i<=3; i++)  /*试探第一个人满筐a[0][0]的值，满筐数不能>3*/
+    {
+        a[0][0]=i;
+        for(j=i; j<=7-i&&j<=3; j++)  /*试探第二个人满筐a[1][0]的值，满筐数不能>3*/
+        {
+            a[1][0]=j;
+            if((a[2][0]=7-j-a[0][0])>3)
+                continue;  /*第三个人满筐数不能>3*/
+            if(a[2][0]<a[1][0])
+                break;  /*要求后一个人分的满筐数大于等于前一个人，以排除重复情况*/
+            for(k=1; k<=5; k+=2)  /*试探半筐a[0][1]的值，半筐数为奇数*/
+            {
+                a[0][1]=k;
+                for(m=1; m<7-k; m+=2)  /*试探半筐a[1][1]的值，半筐数为奇数*/
+                {
+                    a[1][1]=m;
+                    a[2][1]=7-k-m;
+                    /*判断每个人分到的鱼是 3.5筐，flag为满足题意的标记变量*/
+                    for(flag=1,n=0; flag&&n<3; n++)
+                        if(a[n][0]+a[n][1]<7&&a[n][0]*2+a[n][1] == 7)
+                            a[n][2]=7-a[n][0]-a[n][1];  /*计算应得到的空筐数量*/
+                        else
+                            flag=0;  /*不符合题意则置标记为0*/
+                    if(flag)
+                    {
+                        ++count;
+                        printf("No.%d Full basket Semi-basket Empty\n", count);
+                        for(n=0; n<3; n++)
+                            printf(" fisher %c: %d %d %d\n",'A'+n, a[n][0], a[n][1], a[n][2]);
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
