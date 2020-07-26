@@ -21,7 +21,7 @@ int N = prices.size();
 		}
 		return dp_i_0 ;
 ~~~
-+ INT_MIN 是一个常量代表int类型能表达得最小数。
++ INT_MIN 是一个常量代表int类型能表达得最小数。 INT_MAX则是最大。
 
 + dp_i_0代表没买入状态  dp_i_1代表此时是买入状态。
 
