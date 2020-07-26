@@ -25,7 +25,10 @@
 		return count;
 	}
   ~~~
-  #### vector容器定义二维数组写法 vector<vector<int>>.
+#### vector容器定义二维数组写法 
+~~~ c++
+  vector<vector<int>>.
+~~~
 
 ### 代码
 ~~~ c++
