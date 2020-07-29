@@ -1,3 +1,3 @@
 # Practice
 
-## Summer vaction task
+## Summer assignments
