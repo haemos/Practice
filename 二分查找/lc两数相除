@@ -1,0 +1,47 @@
+### 题目
+给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+
+返回被除数 dividend 除以除数 divisor 得到的商。
+
+整数除法的结果应当截去（truncate）其小数部分，例如：truncate(8.345) = 8 以及 truncate(-2.7335) = -2
+
+### 思路代码
+~~~ c++
+class Solution {
+public:
+    int div(int a, int b){
+        if(a < b) return 0;
+        int ans = 1;
+        int acc = b;
+        while(a - acc >= acc){
+            ans += ans;
+            acc += acc;
+        }
+        return ans + div(a - acc, b);
+    }
+
+    int divide(int dividend, int divisor) {
+        if(dividend == 0) return 0;
+        else if(divisor == 1) return dividend;
+        else if(divisor == -1) return (dividend == INT_MIN)? INT_MAX : -dividend;
+        
+        int a = dividend;
+        int b = divisor;
+        int ans = 0;
+        bool flag = (a > 0 && b > 0 || a < 0 && b < 0); //同符号时为真
+        
+        if(b == INT_MIN){ //处理b为特殊值的情况
+            return (a == INT_MIN)? 1 : 0;
+        }
+        if(a == INT_MIN){ //处理a为特殊值的情况
+            a = (flag)? a - b : a + b;
+            ++ans;
+        } 
+        a = (a > 0)? a : -a; 
+        b = (b > 0)? b : -b;
+        ans += div(a, b);
+        if(!flag) ans = -ans;
+        return ans;
+    }
+};
+~~~
